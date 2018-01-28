@@ -45,26 +45,16 @@ Editor::Editor(string fn)
 }
 
 void Editor::updateStatus()
-{
-	switch(mode)
-	{
-		case 'n':
-			// Normal mode
+{		
+		if(mode == 'n')
 			status = "Normal Mode";
-			break;
-		case 'i':
-			// Insert mode
+		if(mode == 'i')
 			status = "Insert Mode";
-			break;
-		case 'x':
-			// Exiting
+		if(mode == 'x')
 			status = "Exiting";
-			break;
-	}
 
 	status += "\tCOL: " + tos(x) + "\tROW: " + tos(y);
 }
-
 string Editor::tos(int i)
 {
 	stringstream ss;
@@ -101,7 +91,7 @@ void Editor::handleInput(int c)
 			break;
 		case 'i':	
 			if(c == 27) {
-				handleEscape(); //returning to normal mode but bar not updating until next keypress. 
+				handleEscape(); //returning to normal mode but bar not updating until next keypress.
 			} else if(c == 127 ||c == KEY_BACKSPACE) {
 				handleBckspce();
 			} else if(c == KEY_DC) {
@@ -125,7 +115,9 @@ void Editor::handleEscape()
 void Editor::handleBckspce()
 {
 	// The Backspace key
-	if(x == 0 && y > 0)
+	if(x == 0 && y == 0)
+		return;
+	else if(x == 0 && y > 0)
 	{
 		x = buff->lines[y-1].length();
 		// Bring the line down
